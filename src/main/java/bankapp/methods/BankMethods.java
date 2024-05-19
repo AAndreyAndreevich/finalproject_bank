@@ -59,7 +59,7 @@ public class BankMethods {
         } catch (SQLException e) {
             log.error("Произошла ошибка : " + e);
         }
-        return "Пополнение баланса";
+        return "+";
     }
 
     /* снятие средств с баланса по id + количество(money) */
@@ -75,6 +75,6 @@ public class BankMethods {
         } catch (SQLException e) {
             log.error("Произошла ошибка : " + e);
         }
-        return "Снятие с баланса";
+        return "-";
     }
 }
