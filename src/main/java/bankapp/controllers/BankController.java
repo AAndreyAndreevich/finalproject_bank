@@ -31,6 +31,6 @@ public class BankController {
     @PostMapping("/takeMoney/{id:\\d++}/{money:\\d++}")
     public static String takeMoney(@PathVariable int id, @PathVariable double money) {
         log.info("Снятие средств по id : " + id + ", на сумму : " + money);
-        return BankMethods.putMoney(id, money);
+        return BankMethods.takeMoney(id, money);
     }
 }
