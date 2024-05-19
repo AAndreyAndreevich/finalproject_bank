@@ -23,6 +23,8 @@ public class ConnectionToDataBase {
                 value1 = resultSet.getString(1);
                 value2 = resultSet.getString(2);
             }
+            connection.close();
+            statement.close();
         } catch (SQLException e) {
             log.error("Произошла ошибка : " + e);
         }
