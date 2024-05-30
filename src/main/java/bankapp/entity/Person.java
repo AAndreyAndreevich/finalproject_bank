@@ -1,9 +1,7 @@
 package bankapp.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
@@ -11,16 +9,21 @@ import org.springframework.stereotype.Component;
 @Setter
 @Entity
 @Table(name = "bank_user")
-@AllArgsConstructor
-@NoArgsConstructor
 @Component
 public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @Column(name = "balance")
     private double balance;
+
+    public Person(double balance) {
+        this.balance = balance;
+    }
+
+    public Person() {
+    }
 
     @Override
     public String toString() {
