@@ -1,6 +1,7 @@
 BankController - класс, который имеет методы для управления приложением;
+BankService - класс, содержащий методы для работы приложения;
+BankAppRunner - запускает приложение;
 entity - сущности;
 repository - репозитории;
-BankAppRunner - запускает приложение;
 
 ![img.png](img.png)
