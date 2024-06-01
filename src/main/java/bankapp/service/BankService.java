@@ -5,10 +5,10 @@ import bankapp.entity.Person;
 import bankapp.repository.BankOperationRepository;
 import bankapp.repository.PersonRepository;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,10 +28,8 @@ public class BankService {
         currentBalance = currentBalance + money;
         personRepository.findById(id).get().setBalance(currentBalance);
         personRepository.flush();
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.format(date);
-        BankOperation bankOperation = new BankOperation(id, "пополнение", money, date);
+        LocalDate localDate = LocalDate.now();
+        BankOperation bankOperation = new BankOperation(id, "пополнение", money, localDate);
         bankOperationRepository.save(bankOperation);
         return personRepository.findById(id);
     }
@@ -44,17 +42,23 @@ public class BankService {
             currentBalance = currentBalance - money;
             personRepository.findById(id).get().setBalance(currentBalance);
             personRepository.flush();
-            Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.format(date);
-            BankOperation bankOperation = new BankOperation(id, "снятие", money, date);
+            LocalDate localDate = LocalDate.now();
+            BankOperation bankOperation = new BankOperation(id, "снятие", money, localDate);
             bankOperationRepository.save(bankOperation);
             return personRepository.findById(id);
         }
     }
 
-    public List<Object> getOperationList(int id, Date startDate, Date endDate) {
-        //я не понимаю. ;)
-        return null;
+    @SneakyThrows
+    public List<BankOperation> getOperationList(int idPerson, LocalDate startDate, LocalDate endDate) {
+        List<BankOperation> bankOperations = bankOperationRepository.findByDateOperationBetween(idPerson, startDate, endDate);
+        bankOperations.forEach((bankOperation -> {
+            bankOperation.setId(bankOperation.getId());
+            bankOperation.setIdPerson(bankOperation.getIdPerson());
+            bankOperation.setCurOperation(bankOperation.getCurOperation());
+            bankOperation.setMoney(bankOperation.getMoney());
+            bankOperation.setDateOperation(bankOperation.getDateOperation());
+        }));
+        return bankOperations;
     }
 }

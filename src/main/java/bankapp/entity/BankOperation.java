@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -24,9 +24,9 @@ public class BankOperation {
     @Column(name = "money")
     private double money;
     @Column(name = "date_operation")
-    private Date dateOperation;
+    private LocalDate dateOperation;
 
-    public BankOperation(int idPerson, String curOperation, double money, Date dateOperation) {
+    public BankOperation(int idPerson, String curOperation, double money, LocalDate dateOperation) {
         this.idPerson = idPerson;
         this.curOperation = curOperation;
         this.money = money;
