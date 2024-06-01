@@ -36,6 +36,12 @@ public class BankController {
         return bankService.takeMoney(id, money);
     }
 
+    @PostMapping("/transferMoney")
+    public Object transferMoney(@RequestParam int idFrom, @RequestParam int idTo, @RequestParam double money) {
+        log.info("Id : " + idFrom + " сделал перевод на id : " + idTo + " в количестве : " + money);
+        return bankService.transferMoney(idFrom, idTo, money);
+    }
+
     @GetMapping("/getOperationList")
     public List<BankOperation> getOperationList(@RequestParam int idPerson, @RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate) {
         return bankService.getOperationList(idPerson, startDate, endDate);

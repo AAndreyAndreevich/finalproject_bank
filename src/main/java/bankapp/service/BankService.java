@@ -48,6 +48,24 @@ public class BankService {
         }
     }
 
+    public Object transferMoney(int idFrom, int idTo, double money) {
+        double balanceIdFrom = personRepository.findById(idFrom).get().getBalance();
+        double balanceIdTo = personRepository.findById(idTo).get().getBalance();
+        if ((balanceIdFrom - money) < 0) {
+            return "Указанная сумма : " + money + " превышает баланс : " + balanceIdFrom + ", укажите другое кол-во";
+        } else {
+            balanceIdFrom = balanceIdFrom - money;
+            personRepository.findById(idFrom).get().setBalance(balanceIdFrom);
+            personRepository.flush();
+            balanceIdTo = balanceIdTo + money;
+            personRepository.findById(idTo).get().setBalance(balanceIdTo);
+            LocalDate localDate = LocalDate.now();
+            BankOperation bankOperation = new BankOperation(idFrom, "перевод на id : " + idTo, money, localDate);
+            bankOperationRepository.save(bankOperation);
+            return "Успех!";
+        }
+    }
+
     public List<BankOperation> getOperationList(int idPerson, LocalDate startDate, LocalDate endDate) {
         List<BankOperation> bankOperations;
         if (startDate != null && endDate != null) {
