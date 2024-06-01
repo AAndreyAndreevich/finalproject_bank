@@ -37,7 +37,7 @@ public class BankController {
     }
 
     @GetMapping("/getOperationList")
-    public List<BankOperation> getOperationList(@RequestParam int idPerson, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+    public List<BankOperation> getOperationList(@RequestParam int idPerson, @RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate) {
         return bankService.getOperationList(idPerson, startDate, endDate);
     }
 }

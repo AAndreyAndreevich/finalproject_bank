@@ -5,7 +5,6 @@ import bankapp.entity.Person;
 import bankapp.repository.BankOperationRepository;
 import bankapp.repository.PersonRepository;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -49,16 +48,45 @@ public class BankService {
         }
     }
 
-    @SneakyThrows
     public List<BankOperation> getOperationList(int idPerson, LocalDate startDate, LocalDate endDate) {
-        List<BankOperation> bankOperations = bankOperationRepository.findByDateOperationBetween(idPerson, startDate, endDate);
-        bankOperations.forEach((bankOperation -> {
-            bankOperation.setId(bankOperation.getId());
-            bankOperation.setIdPerson(bankOperation.getIdPerson());
-            bankOperation.setCurOperation(bankOperation.getCurOperation());
-            bankOperation.setMoney(bankOperation.getMoney());
-            bankOperation.setDateOperation(bankOperation.getDateOperation());
-        }));
+        List<BankOperation> bankOperations;
+        if (startDate != null && endDate != null) {
+            bankOperations = bankOperationRepository.findByDateOperationBetween(idPerson, startDate, endDate);
+            bankOperations.forEach((bankOperation -> {
+                bankOperation.setId(bankOperation.getId());
+                bankOperation.setIdPerson(bankOperation.getIdPerson());
+                bankOperation.setCurOperation(bankOperation.getCurOperation());
+                bankOperation.setMoney(bankOperation.getMoney());
+                bankOperation.setDateOperation(bankOperation.getDateOperation());
+            }));
+        } else if (startDate == null && endDate == null) {
+            bankOperations = bankOperationRepository.findByIdPerson(idPerson);
+            bankOperations.forEach((bankOperation -> {
+                bankOperation.setId(bankOperation.getId());
+                bankOperation.setIdPerson(bankOperation.getIdPerson());
+                bankOperation.setCurOperation(bankOperation.getCurOperation());
+                bankOperation.setMoney(bankOperation.getMoney());
+                bankOperation.setDateOperation(bankOperation.getDateOperation());
+            }));
+        } else if (startDate != null) {
+            bankOperations = bankOperationRepository.findByDateOperationAfter(idPerson, startDate);
+            bankOperations.forEach((bankOperation -> {
+                bankOperation.setId(bankOperation.getId());
+                bankOperation.setIdPerson(bankOperation.getIdPerson());
+                bankOperation.setCurOperation(bankOperation.getCurOperation());
+                bankOperation.setMoney(bankOperation.getMoney());
+                bankOperation.setDateOperation(bankOperation.getDateOperation());
+            }));
+        } else {
+            bankOperations = bankOperationRepository.findByDateOperationBefore(idPerson, endDate);
+            bankOperations.forEach((bankOperation -> {
+                bankOperation.setId(bankOperation.getId());
+                bankOperation.setIdPerson(bankOperation.getIdPerson());
+                bankOperation.setCurOperation(bankOperation.getCurOperation());
+                bankOperation.setMoney(bankOperation.getMoney());
+                bankOperation.setDateOperation(bankOperation.getDateOperation());
+            }));
+        }
         return bankOperations;
     }
 }
